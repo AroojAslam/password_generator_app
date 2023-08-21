@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'home_screen.dart';
+
 
 class ViewPassword extends StatefulWidget {
 
@@ -16,7 +18,12 @@ class _ViewPasswordState extends State<ViewPassword> {
       appBar: AppBar(
         backgroundColor: Colors.grey.shade700,
         title: Text('View All Password ',style: TextStyle(color: Colors.white),),
-        leading: Image.asset('images/pas2.png'),
+          leading: IconButton(
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage(),));
+            },
+            icon: Icon(Icons.keyboard_backspace_rounded,color: Colors.white),
+          )
       ),
       body:StreamBuilder(
         //stream: FirebaseFirestore.instance.collection('PasswordGenerater').snapshots(),
