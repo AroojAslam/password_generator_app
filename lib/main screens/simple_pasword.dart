@@ -128,7 +128,8 @@ class _SimplePasswordState extends State<SimplePassword> {
                             ],
                           );
                         });
-                  },context: context ),
+                  },
+                    context: context, ),
                   customGestureDetector(buttonText: 'Generate Password',  onTap: (){
                     setState(() {
                       str=generateRandomString(4);
