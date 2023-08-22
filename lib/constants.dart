@@ -1,7 +1,4 @@
-
 import 'package:flutter/material.dart';
-
-
 Widget customGestureDetector({
   required String buttonText,
   required VoidCallback onTap,
@@ -38,6 +35,29 @@ Widget customGestureDetector({
         ),
       ),
     ),
+  );
+}
+Widget mainContainer({
+  required BuildContext context,required Widget column,
+}){
+  return Container(
+    height: MediaQuery.of(context).size.height * 0.47,
+    decoration: BoxDecoration(
+      color: Colors.grey.shade700,
+      borderRadius: BorderRadius.only(
+        topRight: Radius.circular(30),
+        topLeft: Radius.circular(30),
+      ),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.3), // Shadow color
+          spreadRadius: 2, // Spread radius
+          blurRadius: 10, // Blur radius
+          offset: Offset(0, 3), // Offset in the (x, y) direction
+        ),
+      ],
+    ),
+    child: column,
   );
 }
 

@@ -76,80 +76,61 @@ class _SimplePasswordState extends State<SimplePassword> {
                   ],
                 )
             ),
-            Container(
-              height: MediaQuery.of(context).size.height*0.47,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade700,
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(30),
-                  topLeft: Radius.circular(30),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.3), // Shadow color
-                    spreadRadius: 2, // Spread radius
-                    blurRadius: 10, // Blur radius
-                    offset: Offset(0, 3), // Offset in the (x, y) direction
-                  ),
-                ],
-              ),
+            mainContainer(
+              context: context,
+              column:Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SizedBox(height: 25,),
+                customGestureDetector(buttonText:'Generate Password For', onTap: (){
 
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  SizedBox(height: 25,),
-                  customGestureDetector(buttonText:'Generate Password For', onTap: (){
-
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            backgroundColor: Colors.white,
-                            title: Text('Enter Hint',style: TextStyle(color: Colors.black87),),
-                            content: TextField(
-                              style: TextStyle(color: Colors.black),
-                              onChanged: (value) {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          backgroundColor: Colors.white,
+                          title: Text('Enter Hint',style: TextStyle(color: Colors.black87),),
+                          content: TextField(
+                            style: TextStyle(color: Colors.black),
+                            onChanged: (value) {
+                              setState(() {
+                                a =  (value);
+                              });
+                            },
+                            decoration: InputDecoration(hintText: "Generate Password For...",hintStyle:TextStyle(color:Colors.black54)),
+                          ),
+                          actions: <Widget>[
+                            ElevatedButton(
+                              child: Text("ok"),
+                              onPressed: () {
                                 setState(() {
-                                  a =  (value);
+
+                                  Navigator.pop(context);
                                 });
-                              },
-                              decoration: InputDecoration(hintText: "Generate Password For...",hintStyle:TextStyle(color:Colors.black54)),
-                            ),
-                            actions: <Widget>[
-                              ElevatedButton(
-                                child: Text("ok"),
-                                onPressed: () {
-                                  setState(() {
+                              },)
 
-                                    Navigator.pop(context);
-                                  });
-                                },)
+                          ],
+                        );
+                      });
+                },
+                  context: context, ),
+                customGestureDetector(buttonText: 'Generate Password',  onTap: (){
+                  setState(() {
+                    str=generateRandomString(4);
+                    num=generatenumber(4);
+                    pasword=str+num;
 
-                            ],
-                          );
-                        });
-                  },
-                    context: context, ),
-                  customGestureDetector(buttonText: 'Generate Password',  onTap: (){
-                    setState(() {
-                      str=generateRandomString(4);
-                      num=generatenumber(4);
-                      pasword=str+num;
+                  });
 
-                    });
+                }, context: context),
+                customGestureDetector(buttonText: 'Save Password', onTap: (){
+                  // FirebaseFirestore.instance.collection("PasswordGenerater").add({'Hint':'$a','Password':'$pasword'});
+                }, context: context),
 
-                  }, context: context),
-                  customGestureDetector(buttonText: 'Save Password', onTap: (){
-                    // FirebaseFirestore.instance.collection("PasswordGenerater").add({'Hint':'$a','Password':'$pasword'});
-                  }, context: context),
+                SizedBox(height: 25,),
 
-                  SizedBox(height: 25,),
-
-                ],
-              ),
-            )
-
-
+              ],
+            ), ),
           ],
         ),
       ),

@@ -49,79 +49,61 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.47,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade700,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(30),
-                    topLeft: Radius.circular(30),
+              mainContainer(context: context, column: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SizedBox(
+                    height: 25,
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.3), // Shadow color
-                      spreadRadius: 2, // Spread radius
-                      blurRadius: 10, // Blur radius
-                      offset: Offset(0, 3), // Offset in the (x, y) direction
-                    ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                      height: 25,
-                    ),
-                    customGestureDetector(
-                      buttonText: "Create Simple Password",
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SimplePassword(),
-                            ));
-                      },
-                      context: context,
-                      divider: Divider(indent: 50, endIndent: 50),
-                      text: Text("Eight Length Password",
-                          style: TextStyle(
-                              fontSize: 12, color: Colors.grey.shade600)),
-                    ),
-                    customGestureDetector(
-                      buttonText: "Create Simple Password",
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SimplePassword(),
-                            ));
-                      },
-                      context: context,
-                      divider: Divider(indent: 50, endIndent: 50),
-                      text: Text("Customize Password ",
-                          style: TextStyle(
-                              fontSize: 12, color: Colors.grey.shade600)),
-                    ),
-                    customGestureDetector(
-                      buttonText: "View All Password",
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ViewPassword(),
-                            ));
-                      },
-                      context: context,
-                      text: Text("View,Edit & Delete Password",
-                          style: TextStyle(
-                              fontSize: 12, color: Colors.grey.shade600)),
-                    ),
-                    SizedBox(
-                      height: 25,
-                    ),
-                  ],
-                ),
-              )
+                  customGestureDetector(
+                    buttonText: "Create Simple Password",
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SimplePassword(),
+                          ));
+                    },
+                    context: context,
+                    divider: Divider(indent: 50, endIndent: 50),
+                    text: Text("Eight Length Password",
+                        style: TextStyle(
+                            fontSize: 12, color: Colors.grey.shade600)),
+                  ),
+                  customGestureDetector(
+                    buttonText: "Create Simple Password",
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SimplePassword(),
+                          ));
+                    },
+                    context: context,
+                    divider: Divider(indent: 50, endIndent: 50),
+                    text: Text("Customize Password ",
+                        style: TextStyle(
+                            fontSize: 12, color: Colors.grey.shade600)),
+                  ),
+                  customGestureDetector(
+                    buttonText: "View All Password",
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ViewPassword(),
+                          ));
+                    },
+                    context: context,
+                    text: Text("View,Edit & Delete Password",
+                        style: TextStyle(
+                            fontSize: 12, color: Colors.grey.shade600)),
+                  ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                ],
+              ),),
             ],
           ),
         ),
