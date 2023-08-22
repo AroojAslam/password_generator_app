@@ -82,7 +82,9 @@ class _ToughPasswordState extends State<ToughPassword> {
                 ],
               )
           ),
-          mainContainer(context: context, column: Column(
+          mainContainer(
+            context: context,
+            column: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               SizedBox(height: 25,),

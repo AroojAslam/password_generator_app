@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'auth/login.dart';
 import 'main screens/home_screen.dart';
 
 void main()async {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.grey),
         useMaterial3: true,
       ),
-      home:  MyHomePage(),
+      home:  LogIn(),
     );
   }
 }

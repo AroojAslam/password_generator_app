@@ -26,28 +26,29 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.02,
-                  ),
-                  Image(
-                      width: 200,
-                      height: 200,
-                      image: AssetImage('assets/images/main.png')),
-                  Text(
-                    'Password Generator',
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 3),
-                  Text(
-                    'Enhancing app security through tough password ',
-                    style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.grey.shade600),
-                  ),
-                ],
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+
+                    Image(
+                        width: 200,
+                        height: 200,
+                        image: AssetImage('assets/images/main.png')),
+                    Text(
+                      'Password Generator',
+                      style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 1),
+                    Text(
+                      'Enhancing app security through tough password ',
+                      style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey.shade600),
+                    ),
+                  ],
+                ),
               ),
               mainContainer(context: context, column: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -56,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     height: 25,
                   ),
                   customGestureDetector(
-                    buttonText: "Create Simple Password",
+                    buttonText: "Generate Simple Password",
                     onTap: () {
                       Navigator.push(
                           context,
@@ -65,23 +66,19 @@ class _MyHomePageState extends State<MyHomePage> {
                           ));
                     },
                     context: context,
-                    divider: Divider(indent: 50, endIndent: 50),
-                    text: Text("Eight Length Password",
-                        style: TextStyle(
-                            fontSize: 12, color: Colors.grey.shade600)),
+                    text: Text("Eight Length Password", style: TextStyle(fontSize: 12, color: Colors.grey.shade600)),
                   ),
                   customGestureDetector(
-                    buttonText: "Create Simple Password",
+                    buttonText: "Generate Tough Password",
                     onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SimplePassword(),
+                            builder: (context) => ToughPassword(),
                           ));
                     },
                     context: context,
-                    divider: Divider(indent: 50, endIndent: 50),
-                    text: Text("Customize Password ",
+                    text: Text("Customize Password",
                         style: TextStyle(
                             fontSize: 12, color: Colors.grey.shade600)),
                   ),
