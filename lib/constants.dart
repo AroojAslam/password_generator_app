@@ -3,15 +3,15 @@ Widget customGestureDetector({
   required String buttonText,
   required VoidCallback onTap,
   required BuildContext context,
-  double height = 65,
+  double height = 60,
   Widget? text,
 }) {
   return GestureDetector(
     onTap: onTap,
     child: Card(
-      color: Colors.grey.shade50,
       margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       elevation: 2,
+
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
@@ -38,11 +38,10 @@ Widget customGestureDetector({
 Widget mainContainer({
   required BuildContext context,required Widget column,
 }){
-  return Expanded(
-    child: Container(
-      height: MediaQuery.of(context).size.height * 0.40,
+  return  Container(
+      height: MediaQuery.of(context).size.height * 0.37,
       decoration: BoxDecoration(
-        color: Colors.grey.shade700,
+       color: Theme.of(context).primaryColor,
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(30),
           topLeft: Radius.circular(30),
@@ -57,8 +56,20 @@ Widget mainContainer({
         ],
       ),
       child: column,
-    ),
-  );
+    );
+}
+
+Widget backGround({required BuildContext context,required int pos1,required pos2}){
+  return Positioned(
+      right: -100,bottom: -100,
+      child: Container(
+        height: 350,
+        width: 350,
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor.withOpacity(0.2),
+          shape: BoxShape.circle,
+        ),
+      ));
 }
 
 

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:password_generator_app/constants.dart';
-import 'package:password_generator_app/main%20screens/simple_pasword.dart';
-import 'package:password_generator_app/main%20screens/tough_password.dart';
-import 'package:password_generator_app/main%20screens/view_password.dart';
+import 'package:password_generator_app/main_screens/simple_pasword.dart';
+import 'package:password_generator_app/main_screens/tough_password.dart';
+import 'package:password_generator_app/main_screens/view_password.dart';
+
+import '../auth_screen/login.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -14,12 +16,19 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.grey.shade700,
+        automaticallyImplyLeading: false,
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text(
-          'Pocket Password Dairy',
+          'Password Generator',
           style: TextStyle(color: Colors.white),
         ),
-        leading: Image(image: AssetImage('assets/images/main.png')),
+        actions: [
+          IconButton(
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> LogIn()));
+            },
+           icon:   Icon(Icons.logout,color:Colors.white),)
+        ],
       ),
       body: SafeArea(
         child: Center(
@@ -36,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         height: 200,
                         image: AssetImage('assets/images/main.png')),
                     Text(
-                      'Password Generator',
+                      'Lets Generator your Password',
                       style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 1),
@@ -85,11 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   customGestureDetector(
                     buttonText: "View All Password",
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ViewPassword(),
-                          ));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ViewPassword(),));
                     },
                     context: context,
                     text: Text("View,Edit & Delete Password",

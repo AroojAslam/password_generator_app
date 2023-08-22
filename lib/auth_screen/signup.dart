@@ -94,16 +94,18 @@ class _SignUpState extends State<SignUp> {
                       )
                   ),
                   SizedBox(height: 30,),
-                  customGestureDetector(buttonText: 'LogIn', onTap: (){}, context: context,height: 50),
+                  customGestureDetector(buttonText: 'SignUp', onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => LogIn(),));
+                  }, context: context,height: 50),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text('Already Have an Account'),
                       TextButton(onPressed: (){
                         Navigator.push(context, MaterialPageRoute(builder: (context) => LogIn(),));
-                      }, child: Text('LogIn')),
+                      }, child: Text('SighUp')),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),

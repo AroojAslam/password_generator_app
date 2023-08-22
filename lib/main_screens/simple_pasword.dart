@@ -51,7 +51,7 @@ class _SimplePasswordState extends State<SimplePassword> {
     return Scaffold(
 
       appBar: AppBar(
-          backgroundColor: Colors.grey.shade700,
+          backgroundColor: Theme.of(context).primaryColor,
           title: Text('Generate Simple Password ' ,style: TextStyle(color: Colors.white),),
           leading: IconButton(
             onPressed: (){

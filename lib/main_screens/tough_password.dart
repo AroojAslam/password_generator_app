@@ -59,7 +59,7 @@ class _ToughPasswordState extends State<ToughPassword> {
   Widget build(BuildContext context) {
     return  Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.grey.shade700,
+          backgroundColor: Theme.of(context).primaryColor,
         title: Text('Create Tough Password',style: TextStyle(color: Colors.white),),
           leading: IconButton(
             onPressed: (){
@@ -118,7 +118,7 @@ class _ToughPasswordState extends State<ToughPassword> {
                         ],
                       );
                     });
-              },buttonText: 'Generate Password For',height: 55),
+              },buttonText: 'Generate Password For',height: 45),
               customGestureDetector(context: context, onTap: (){
                 showDialog(
                     context: context,
@@ -190,7 +190,7 @@ class _ToughPasswordState extends State<ToughPassword> {
                 generatenumber(charater);
                 generatenumber(digit);
                 generatenumber(sym);
-              },buttonText: 'Total Length',height: 55),
+              },buttonText: 'Total Length',height: 45),
               customGestureDetector(buttonText: 'generate password', onTap: (){
                 if((charater==0 && digit==0) && (sym==0 && lengh==0)){
                   showDialog(
@@ -252,11 +252,11 @@ class _ToughPasswordState extends State<ToughPassword> {
                   );
 
                 }
-              }, context: context,height: 55),
+              }, context: context,height: 45),
               customGestureDetector(buttonText: "Save Password", onTap: (){
                 // FirebaseFirestore.instance.collection("PasswordGenerater").add({'Hint':'$a','Password':'$pasword'});
 
-              }, context: context,height: 55),
+              }, context: context,height: 45),
 
               SizedBox(height: 25,),
 

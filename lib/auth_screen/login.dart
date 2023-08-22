@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:password_generator_app/auth/signup.dart';
+import 'package:password_generator_app/auth_screen/signup.dart';
 import 'package:password_generator_app/constants.dart';
 
+import '../main_screens/home_screen.dart';
 class LogIn extends StatefulWidget {
   const LogIn({super.key});
 
@@ -90,7 +91,9 @@ class _LogInState extends State<LogIn> {
                     alignment: Alignment.topRight,
                       child: TextButton(onPressed: (){}, child: Text('Forget Password',))),
                   SizedBox(height: 10,),
-                  customGestureDetector(buttonText: 'LogIn', onTap: (){}, context: context,height: 50),
+                  customGestureDetector(buttonText: 'LogIn', onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage(),));
+                  }, context: context,height: 50),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
