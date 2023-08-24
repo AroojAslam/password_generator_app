@@ -1,8 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'auth_screen/login.dart';
-import 'onboarding_screen/intro_screens.dart';
+import 'checking.dart';
+
 
 void main()async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -17,7 +21,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(005050, 00, 80, 80)),
         useMaterial3: true,
       ),
-      home:  OnboardScreen(),
+      home:  checking(),
     );
   }
 }

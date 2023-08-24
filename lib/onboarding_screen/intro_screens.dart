@@ -1,8 +1,13 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:password_generator_app/auth_screen/login.dart';
 import 'package:password_generator_app/constants.dart';
 import 'package:password_generator_app/onboarding_screen/screens.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+import '../main_screens/home_screen.dart';
 
 class OnboardScreen extends StatefulWidget {
   const OnboardScreen({super.key});
@@ -12,8 +17,10 @@ class OnboardScreen extends StatefulWidget {
 }
 
 class _OnboardScreenState extends State<OnboardScreen> {
+
   PageController pageController= PageController();
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(

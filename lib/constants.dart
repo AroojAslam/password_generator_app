@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 Widget customGestureDetector({
   required String buttonText,
   required VoidCallback onTap,
   required BuildContext context,
   double height = 60,
   Widget? text,
+  bool loading =false,
 }) {
   return GestureDetector(
     onTap: onTap,
@@ -23,11 +25,11 @@ Widget customGestureDetector({
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+             loading ? CircularProgressIndicator(): Text(
                 buttonText,
                 style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w500),
               ),
-              if (text != null) text,
+              if (text != null)text,
             ],
           ),
         ),
@@ -71,5 +73,17 @@ Widget backGround({required BuildContext context,required int pos1,required pos2
         ),
       ));
 }
+class Utils{
+  Future<void> toastmessage(String message) async {
+    Fluttertoast.showToast(
+        msg:message ,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
+  }
 
-
+}
