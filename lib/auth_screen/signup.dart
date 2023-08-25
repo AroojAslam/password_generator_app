@@ -127,21 +127,22 @@ class _SignUpState extends State<SignUp> {
                   ),
                   SizedBox(height: 30,),
                   customGestureDetector(buttonText: 'SignUp', onTap: (){
-                    String uid =DateTime.now().millisecondsSinceEpoch.toString();
+                   // String uid =DateTime.now().millisecondsSinceEpoch.toString();
                     if(formKey.currentState!.validate()){
                       setState(() {
                         loading=true;
                       });
-                      if(passwordController.toString()==confirmpasswordController.toString()){
+                      if(passwordController.text.toString() == confirmpasswordController.text.toString()){
                         auth.createUserWithEmailAndPassword(
                             email: emailController.text,
                             password:passwordController.text).then((value) => {
                           Utils().toastmessage('Sucessfuly SignIn'),
-                          firestore.doc(uid).set({
-                            "username":nameController.text.toString(),
-                            "email":emailController.text.toString(),
-                            "password":passwordController.text.toString(),
-                          }),
+                          // firestore.doc(uid).set({
+                          //   "uid":uid,
+                          //   "username":nameController.text.toString(),
+                          //   "email":emailController.text.toString(),
+                          //   "password":passwordController.text.toString(),
+                          // }),
                           Navigator.push(context, MaterialPageRoute(builder: (context) => LogIn(),)),
                         setState(() {
                         loading=false;

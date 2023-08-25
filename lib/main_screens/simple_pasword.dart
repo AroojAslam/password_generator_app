@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
@@ -15,6 +17,17 @@ class SimplePassword extends StatefulWidget {
   State<SimplePassword> createState() => _SimplePasswordState();
 }
 class _SimplePasswordState extends State<SimplePassword> {
+  final auth = FirebaseAuth.instance;
+  final firestore = FirebaseFirestore.instance.collection('users');
+ void addpasswor(){
+   final auth = FirebaseAuth.instance;
+   final user = auth.currentUser;
+   String uid = user!.uid;
+   var time =DateTime.now().millisecondsSinceEpoch;
+   firestore.doc(uid).collection('pass').doc(time.toString()).set({
+     'AppName':'$a','Password':'$pasword'
+   });
+ }
   String a="";
   var str;
   var num;
@@ -91,6 +104,7 @@ class _SimplePasswordState extends State<SimplePassword> {
                           backgroundColor: Colors.white,
                           title: Text('Enter Hint',style: TextStyle(color: Colors.black87),),
                           content: TextField(
+                             maxLength: 20,
                             style: TextStyle(color: Colors.black),
                             onChanged: (value) {
                               setState(() {
@@ -124,9 +138,8 @@ class _SimplePasswordState extends State<SimplePassword> {
 
                 }, context: context),
                 customGestureDetector(buttonText: 'Save Password', onTap: (){
-                  // FirebaseFirestore.instance.collection("PasswordGenerater").add({'Hint':'$a','Password':'$pasword'});
+                  addpasswor();
                 }, context: context),
-
                 SizedBox(height: 25,),
 
               ],

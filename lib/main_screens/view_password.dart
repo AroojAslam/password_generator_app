@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -11,9 +13,13 @@ class ViewPassword extends StatefulWidget {
 }
 
 class _ViewPasswordState extends State<ViewPassword> {
+  final auth = FirebaseAuth.instance;
+  final firestore = FirebaseFirestore.instance;
   var newPassword;
   @override
   Widget build(BuildContext context) {
+    final user = auth.currentUser;
+    String uid = user!.uid;
     return Scaffold(
       appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
@@ -49,70 +55,131 @@ class _ViewPasswordState extends State<ViewPassword> {
           ),
 
           Expanded(
-            child: StreamBuilder(
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
+            child:  StreamBuilder(
+              stream: firestore.collection('users').doc(uid).collection('pass').snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                }
+
+                if (!snapshot.hasData) {
+                  return Center(child: CircularProgressIndicator());
+                }
+
+                var passList = snapshot.data!.docs;
+
                 return ListView.builder(
-                  itemCount: 2,
-                   // itemCount: snapshot.data.docs.length,
-                    itemBuilder: (context, index) {
-                      return  Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 2) ,
-                        child: Card(
-                          elevation: 3,
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            height: 130,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                 Container(
-                                   child: Row(
-                                     children: [
-                                       Column(
-                                         crossAxisAlignment: CrossAxisAlignment.start,
-                                         mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                         children: [
-                                           Text('App Name:',style: TextStyle(
-                                               fontSize: 16,fontWeight: FontWeight.w600,
-                                               color: Theme.of(context).primaryColor),),
-                                           Text('Pasword:',style: TextStyle(fontSize: 16,
-                                               fontWeight: FontWeight.w600,color: Theme.of(context).primaryColor),),
-                                         ],
-                                       ),
-                                       SizedBox(width: 10,),
-                                       Column(
-                                         crossAxisAlignment: CrossAxisAlignment.start,
-                                         mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                         children: [
-                                           Text('Instagram'),
-                                           Text('Au68@*'),
-                                         ],
-                                       ),
-                                     ],
-                                   ),
-                                 ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    children: [
-                                      ElevatedButton(
-                                          child: Icon(Icons.edit),
-                                      onPressed: (){}),
-                                      ElevatedButton(child: Icon(Icons.delete),onPressed: (){}),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                  itemCount: passList.length,
+                  itemBuilder: (context, index) {
+                    var passData = passList[index].data() as Map<String, dynamic>;
+                    var appName = passData['AppName'];
+                    var password = passData['Password'];
+
+                    return Card(
+                      elevation: 4,
+                      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 7),
+                      child: ListTile(
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('App Name:',style: TextStyle(fontWeight: FontWeight.w600,color:Theme.of(context).primaryColor),),
+                            Text(appName),
+                          ],
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Password:',style: TextStyle(fontWeight: FontWeight.w600,color:Theme.of(context).primaryColor),),
+                            Text(password),
+                          ],
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    String newPassword = password; // Initialize with the existing password
+                                    return AlertDialog(
+                                      title: Text('Edit Password'),
+                                      content: TextField(
+                                        maxLength: 10,
+                                        onChanged: (value) {
+                                          newPassword = value;
+                                        },
+                                        decoration: InputDecoration(labelText: 'New Password'),
+                                      ),
+                                      actions: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            firestore
+                                                .collection('users')
+                                                .doc(uid)
+                                                .collection('pass')
+                                                .doc(passList[index].id)
+                                                .update({'Password': newPassword});
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('Save'),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('Cancel'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              child: Icon(Icons.edit),
                             ),
 
-                          ),
+                            SizedBox(width: 8),
+                            ElevatedButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text('Delete Password'),
+                                      content: Text('Are you sure you want to delete this password?'),
+                                      actions: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            firestore
+                                                .collection('users')
+                                                .doc(uid)
+                                                .collection('pass')
+                                                .doc(passList[index].id)
+                                                .delete();
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('Delete'),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('Cancel'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              child: Icon(Icons.delete),
+                            ),
+
+                          ],
                         ),
-                      );
-
-                    });
-
+                      ),
+                    );
+                  },
+                );
               },
             ),
           ),

@@ -35,6 +35,23 @@ class _ForgorPasswordState extends State<ForgorPassword> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Image(
+                  width: 200,
+                  height: 200,
+                  image: AssetImage('assets/images/main.png')),
+              Text(
+                'Recover Password',
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 5),
+              Text(
+                'Enter Email to Recover your password',
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey.shade600),
+              ),
+              SizedBox(height: 50,),
               TextFormField(
                 keyboardType: TextInputType.emailAddress,
                 controller: emailController,
