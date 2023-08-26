@@ -19,15 +19,6 @@ class SimplePassword extends StatefulWidget {
 class _SimplePasswordState extends State<SimplePassword> {
   final auth = FirebaseAuth.instance;
   final firestore = FirebaseFirestore.instance.collection('users');
- void addpasswor(){
-   final auth = FirebaseAuth.instance;
-   final user = auth.currentUser;
-   String uid = user!.uid;
-   var time =DateTime.now().millisecondsSinceEpoch;
-   firestore.doc(uid).collection('pass').doc(time.toString()).set({
-     'AppName':'$a','Password':'$pasword'
-   });
- }
   String a="";
   var str;
   var num;
@@ -95,14 +86,13 @@ class _SimplePasswordState extends State<SimplePassword> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 SizedBox(height: 25,),
-                customGestureDetector(buttonText:'Generate Password For', onTap: (){
-
+                customGestureDetector(buttonText:'App Name', onTap: (){
                   showDialog(
                       context: context,
                       builder: (context) {
                         return AlertDialog(
                           backgroundColor: Colors.white,
-                          title: Text('Enter Hint',style: TextStyle(color: Colors.black87),),
+                          title: Text('App Name',style: TextStyle(color: Colors.black87),),
                           content: TextField(
                              maxLength: 20,
                             style: TextStyle(color: Colors.black),
@@ -111,17 +101,24 @@ class _SimplePasswordState extends State<SimplePassword> {
                                 a =  (value);
                               });
                             },
-                            decoration: InputDecoration(hintText: "Generate Password For...",hintStyle:TextStyle(color:Colors.black54)),
+                            decoration: InputDecoration(hintText: "Enter App Name",hintStyle:TextStyle(color:Colors.black54)),
                           ),
                           actions: <Widget>[
                             ElevatedButton(
                               child: Text("ok"),
                               onPressed: () {
                                 setState(() {
-
                                   Navigator.pop(context);
                                 });
-                              },)
+                              },),
+                            ElevatedButton(
+                              child: Text("cancle"),
+                              onPressed: () {
+                                setState(() {
+                                  Navigator.pop(context);
+                                  a='';
+                                });
+                              },),
 
                           ],
                         );
@@ -130,15 +127,25 @@ class _SimplePasswordState extends State<SimplePassword> {
                   context: context, ),
                 customGestureDetector(buttonText: 'Generate Password',  onTap: (){
                   setState(() {
-                    str=generateRandomString(4);
-                    num=generatenumber(4);
-                    pasword=str+num;
+                   if(a!=''){
+                     str=generateRandomString(4);
+                     num=generatenumber(4);
+                     pasword=str+num;
+                   }else
+                 {
+                   Utils().toastmessage('For Generating Password you enter app name');
 
+                 }
                   });
 
                 }, context: context),
                 customGestureDetector(buttonText: 'Save Password', onTap: (){
-                  addpasswor();
+                  addpasswor(pasword: '$pasword',a: '$a');
+                  Utils().toastmessage('Password Saved');
+                  setState(() {
+                    pasword='';
+                    a='';
+                  });
                 }, context: context),
                 SizedBox(height: 25,),
 
@@ -149,5 +156,4 @@ class _SimplePasswordState extends State<SimplePassword> {
       ),
     );
   }
-
 }

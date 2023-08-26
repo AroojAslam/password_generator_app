@@ -20,8 +20,9 @@ class _ToughPasswordState extends State<ToughPassword> {
   var num;
   var sym1;
   int lengh=0;
-  String a=" ";
-  var pasword=" ";
+  int totalLength=0;
+  String a="";
+  var pasword="";
   String generateRandomString(int len) {
     final _random = Random();
     const _availableLetr =
@@ -94,7 +95,7 @@ class _ToughPasswordState extends State<ToughPassword> {
                     builder: (context) {
                       return AlertDialog(
                         backgroundColor: Colors.white,
-                        title: Text('Enter Title',style: TextStyle(color: Colors.black87),),
+                        title: Text('App Name',style: TextStyle(color: Colors.black87),),
                         content: TextField(
                           style: TextStyle(color: Colors.black),
                           onChanged: (value) {
@@ -102,7 +103,7 @@ class _ToughPasswordState extends State<ToughPassword> {
                               a =  (value);
                             });
                           },
-                          decoration: InputDecoration(hintText: "Generate Password For...",hintStyle:TextStyle(color:Colors.black54)),
+                          decoration: InputDecoration(hintText: "Enter App Name",hintStyle:TextStyle(color:Colors.black54)),
                         ),
                         actions: <Widget>[
                           ElevatedButton(
@@ -127,19 +128,22 @@ class _ToughPasswordState extends State<ToughPassword> {
                         backgroundColor: Colors.white,
                         title: Text('Enter Lenght',style: TextStyle(color: Colors.black87),),
                         content: Container(
-                          height: 200,
+                          height: 250,
                           child: Column(
                             children: [
                               TextField(
                                 style: TextStyle(color: Colors.black),
+                                keyboardType: TextInputType.number,
                                 onChanged: (value) {
                                   setState(() {
                                     lengh =  int.parse(value);
+                                    totalLength=lengh;
                                   });
                                 },
-                                decoration: InputDecoration(hintText: "Total Length",hintStyle:TextStyle(color:Colors.black54)),
+                                decoration: InputDecoration(hintText: "Total Length (0-15)",hintStyle:TextStyle(color:Colors.black54)),
                               ),
                               TextField(
+                                keyboardType: TextInputType.number,
                                 style: TextStyle(color: Colors.black),
                                 onChanged: (value) {
                                   setState(() {
@@ -147,32 +151,33 @@ class _ToughPasswordState extends State<ToughPassword> {
 
                                   });
                                 },
-                                decoration: InputDecoration(hintText: "Total Characters",hintStyle:TextStyle(color:Colors.black54)),
+                                decoration: InputDecoration(hintText: "Characters",hintStyle:TextStyle(color:Colors.black54)),
                               ),
                               TextField(
+                                keyboardType: TextInputType.number,
                                 style: TextStyle(color: Colors.black),
                                 onChanged: (value) {
                                   setState(() {
                                     digit =  int.parse(value);
                                   });
                                 },
-                                decoration: InputDecoration(hintText: "Total Digits",hintStyle:TextStyle(color:Colors.black54)),
+                                decoration: InputDecoration(hintText: "Digits",hintStyle:TextStyle(color:Colors.black54)),
                               ),
                               TextField(
+                                keyboardType: TextInputType.number,
                                 style: TextStyle(color: Colors.black),
                                 onChanged: (value) {
                                   setState(() {
                                     sym =  int.parse(value);
                                   });
                                 },
-                                decoration: InputDecoration(hintText: "Total Symbols",hintStyle:TextStyle(color:Colors.black54)),
+                                decoration: InputDecoration(hintText: "Symbols",hintStyle:TextStyle(color:Colors.black54)),
                               ),
                             ],
                           ),
                         ),
                         actions: <Widget>[
                           ElevatedButton(
-
                             child: Text("ok"),
                             onPressed: () {
                               setState(() {
@@ -192,41 +197,19 @@ class _ToughPasswordState extends State<ToughPassword> {
                 generatenumber(sym);
               },buttonText: 'Total Length',height: 45),
               customGestureDetector(buttonText: 'generate password', onTap: (){
-                if((charater==0 && digit==0) && (sym==0 && lengh==0)){
-                  showDialog(
-                    context: context,
-                    builder: (ctx) => AlertDialog(
-                      title: Text("Error",textAlign: TextAlign.center),
-                      content: Text("Enter total length to generate password",textAlign: TextAlign.center),
-                      actions: <Widget>[
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(ctx).pop();
-                          },
-                          child: Text("Ok"),
-                        ),
-                      ],
-                    ),
-                  );
+                if(a==""){
+                  Utils().toastmessage('For Generating Password\nyou enter app name');
                 }
-                if(lengh<0){
-                  showDialog(
-                    context: context,
-                    builder: (ctx) => AlertDialog(
-                      title: Text("Error",textAlign: TextAlign.center),
-                      content: Text("Your given Length is greater then total length",textAlign: TextAlign.center),
-                      actions: <Widget>[
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(ctx).pop();
-                          },
-                          child: Text("Ok"),
-                        ),
-                      ],
-                    ),
-                  );
+             else   if(totalLength>15 ){
+                 Utils().toastmessage("Total length is greater then 15");
                 }
-                else if(lengh==0){
+              else  if((charater==0 && digit==0) && (sym==0 && lengh==0)){
+                Utils().toastmessage("Enter total length to generate password");
+                }
+               else if(lengh<0){
+                 Utils().toastmessage("Your given Length is greater then total length");
+                }
+                else if(lengh==0 && totalLength<=15){
                   setState(() {
                     str = generateRandomString(charater);
                     num =  generatenumber(digit);
@@ -235,27 +218,17 @@ class _ToughPasswordState extends State<ToughPassword> {
                   });
                 }
                 else {
-                  showDialog(
-                    context: context,
-                    builder: (ctx) => AlertDialog(
-                      title: Text("Error",textAlign: TextAlign.center),
-                      content: Text("Your given Length is smaller then total length",textAlign: TextAlign.center),
-                      actions: <Widget>[
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(ctx).pop();
-                          },
-                          child: Text("Ok"),
-                        ),
-                      ],
-                    ),
-                  );
+                  Utils().toastmessage("Your given Length is smaller then total length");
 
                 }
               }, context: context,height: 45),
               customGestureDetector(buttonText: "Save Password", onTap: (){
-                // FirebaseFirestore.instance.collection("PasswordGenerater").add({'Hint':'$a','Password':'$pasword'});
-
+                addpasswor(a: '$a',pasword: '$pasword');
+                Utils().toastmessage('Password Saved');
+                setState(() {
+                  pasword='';
+                  a='';
+                });
               }, context: context,height: 45),
 
               SizedBox(height: 25,),
@@ -266,4 +239,5 @@ class _ToughPasswordState extends State<ToughPassword> {
       ),
     );
   }
+
 }

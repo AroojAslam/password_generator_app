@@ -16,6 +16,7 @@ class _ViewPasswordState extends State<ViewPassword> {
   final auth = FirebaseAuth.instance;
   final firestore = FirebaseFirestore.instance;
   var newPassword;
+  final searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final user = auth.currentUser;
@@ -36,6 +37,7 @@ class _ViewPasswordState extends State<ViewPassword> {
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: TextFormField(
+              controller: searchController,
               decoration: InputDecoration(
                 hintText: 'Search',
                 prefixIcon: Icon(Icons.search),
@@ -65,120 +67,232 @@ class _ViewPasswordState extends State<ViewPassword> {
                 if (!snapshot.hasData) {
                   return Center(child: CircularProgressIndicator());
                 }
-
                 var passList = snapshot.data!.docs;
+                return FutureBuilder(
+                  builder:  (context, AsyncSnapshot<List<dynamic>> snapshot)
+                  {
+                    return ListView.builder(
+                      itemCount: passList.length,
+                      itemBuilder: (context, index) {
+                        var passData = passList[index].data() as Map<String, dynamic>;
+                        var appName = passData['AppName'];
+                        var password = passData['Password'];
 
-                return ListView.builder(
-                  itemCount: passList.length,
-                  itemBuilder: (context, index) {
-                    var passData = passList[index].data() as Map<String, dynamic>;
-                    var appName = passData['AppName'];
-                    var password = passData['Password'];
-
-                    return Card(
-                      elevation: 4,
-                      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 7),
-                      child: ListTile(
-                        title: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('App Name:',style: TextStyle(fontWeight: FontWeight.w600,color:Theme.of(context).primaryColor),),
-                            Text(appName),
-                          ],
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Password:',style: TextStyle(fontWeight: FontWeight.w600,color:Theme.of(context).primaryColor),),
-                            Text(password),
-                          ],
-                        ),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    String newPassword = password; // Initialize with the existing password
-                                    return AlertDialog(
-                                      title: Text('Edit Password'),
-                                      content: TextField(
-                                        maxLength: 10,
-                                        onChanged: (value) {
-                                          newPassword = value;
+                        if(searchController.text.isEmpty){
+                          return Card(
+                            elevation: 4,
+                            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 7),
+                            child: ListTile(
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('App Name:',style: TextStyle(fontWeight: FontWeight.w600,color:Theme.of(context).primaryColor),),
+                                  Text(appName),
+                                ],
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Password:',style: TextStyle(fontWeight: FontWeight.w600,color:Theme.of(context).primaryColor),),
+                                  Text(password),
+                                ],
+                              ),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          String newPassword = password; // Initialize with the existing password
+                                          return AlertDialog(
+                                            title: Text('Edit Password'),
+                                            content: TextField(
+                                              maxLength: 10,
+                                              onChanged: (value) {
+                                                newPassword = value;
+                                              },
+                                              decoration: InputDecoration(labelText: 'New Password'),
+                                            ),
+                                            actions: [
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  firestore
+                                                      .collection('users')
+                                                      .doc(uid)
+                                                      .collection('pass')
+                                                      .doc(passList[index].id)
+                                                      .update({'Password': newPassword});
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('Save'),
+                                              ),
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('Cancel'),
+                                              ),
+                                            ],
+                                          );
                                         },
-                                        decoration: InputDecoration(labelText: 'New Password'),
-                                      ),
-                                      actions: [
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            firestore
-                                                .collection('users')
-                                                .doc(uid)
-                                                .collection('pass')
-                                                .doc(passList[index].id)
-                                                .update({'Password': newPassword});
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text('Save'),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text('Cancel'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                              child: Icon(Icons.edit),
-                            ),
+                                      );
+                                    },
+                                    child: Icon(Icons.edit),
+                                  ),
 
-                            SizedBox(width: 8),
-                            ElevatedButton(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: Text('Delete Password'),
-                                      content: Text('Are you sure you want to delete this password?'),
-                                      actions: [
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            firestore
-                                                .collection('users')
-                                                .doc(uid)
-                                                .collection('pass')
-                                                .doc(passList[index].id)
-                                                .delete();
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text('Delete'),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text('Cancel'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                              child: Icon(Icons.delete),
-                            ),
+                                  SizedBox(width: 8),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: Text('Delete Password'),
+                                            content: Text('Are you sure you want to delete this password?'),
+                                            actions: [
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  firestore
+                                                      .collection('users')
+                                                      .doc(uid)
+                                                      .collection('pass')
+                                                      .doc(passList[index].id)
+                                                      .delete();
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('Delete'),
+                                              ),
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('Cancel'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: Icon(Icons.delete),
+                                  ),
 
-                          ],
-                        ),
-                      ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }else if(appName.toLowerCase().contains(searchController.text.toLowerCase())){
+                          return Card(
+                            elevation: 4,
+                            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 7),
+                            child: ListTile(
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('App Name:',style: TextStyle(fontWeight: FontWeight.w600,color:Theme.of(context).primaryColor),),
+                                  Text(appName),
+                                ],
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Password:',style: TextStyle(fontWeight: FontWeight.w600,color:Theme.of(context).primaryColor),),
+                                  Text(password),
+                                ],
+                              ),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          String newPassword = password; // Initialize with the existing password
+                                          return AlertDialog(
+                                            title: Text('Edit Password'),
+                                            content: TextField(
+                                              maxLength: 10,
+                                              onChanged: (value) {
+                                                newPassword = value;
+                                              },
+                                              decoration: InputDecoration(labelText: 'New Password'),
+                                            ),
+                                            actions: [
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  firestore
+                                                      .collection('users')
+                                                      .doc(uid)
+                                                      .collection('pass')
+                                                      .doc(passList[index].id)
+                                                      .update({'Password': newPassword});
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('Save'),
+                                              ),
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('Cancel'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: Icon(Icons.edit),
+                                  ),
+
+                                  SizedBox(width: 8),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: Text('Delete Password'),
+                                            content: Text('Are you sure you want to delete this password?'),
+                                            actions: [
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  firestore
+                                                      .collection('users')
+                                                      .doc(uid)
+                                                      .collection('pass')
+                                                      .doc(passList[index].id)
+                                                      .delete();
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('Delete'),
+                                              ),
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('Cancel'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: Icon(Icons.delete),
+                                  ),
+
+                                ],
+                              ),
+                            ),
+                          );
+                        }
+                        else{
+                          return  Container();
+                        }
+                      },
                     );
-                  },
+                  }
                 );
               },
             ),

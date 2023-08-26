@@ -47,30 +47,33 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-
-                      Image(
-                          width: 200,
-                          height: 200,
-                          image: AssetImage('assets/images/main.png')),
-                      Text(
-                        'Password Generator',
-                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 1),
-                      Text(
-                        'Enhancing app security through tough password ',
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.grey.shade600),
-                      ),
-                    ],
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 30,),
+                        Image(
+                            width: 200,
+                            height: 200,
+                            image: AssetImage('assets/images/main.png')),
+                        Text(
+                          'Password Generator',
+                          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 1),
+                        Text(
+                          'Enhancing app security through tough password ',
+                          style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.grey.shade600),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                mainContainer(context: context, column: Column(
+                mainContainer(context: context,
+                  column: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SizedBox(

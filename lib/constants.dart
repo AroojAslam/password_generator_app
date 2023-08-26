@@ -1,5 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+void addpasswor({required String pasword,required String a} ){
+  final firestore = FirebaseFirestore.instance.collection('users');
+  final auth = FirebaseAuth.instance;
+  final user = auth.currentUser;
+  String uid = user!.uid;
+  var time =DateTime.now().millisecondsSinceEpoch;
+  firestore.doc(uid).collection('pass').doc(time.toString()).set({
+    'AppName':'$a','Password':'$pasword'
+  });
+}
 Widget customGestureDetector({
   required String buttonText,
   required VoidCallback onTap,
