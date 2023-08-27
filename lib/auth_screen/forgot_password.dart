@@ -1,18 +1,15 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:password_generator_app/constants.dart';
-
 import 'login.dart';
-
-class ForgorPassword extends StatefulWidget {
-  const ForgorPassword({super.key});
+class ForgotPassword extends StatefulWidget {
+  const ForgotPassword({super.key});
 
   @override
-  State<ForgorPassword> createState() => _ForgorPasswordState();
+  State<ForgotPassword> createState() => _ForgotPasswordState();
 }
 
-class _ForgorPasswordState extends State<ForgorPassword> {
+class _ForgotPasswordState extends State<ForgotPassword> {
   final auth= FirebaseAuth.instance;
   final emailController = TextEditingController();
   @override
@@ -20,12 +17,12 @@ class _ForgorPasswordState extends State<ForgorPassword> {
     return Scaffold(
       appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
-          title: Text('Forgot Password',style: TextStyle(color: Colors.white),),
+          title:const Text('Forgot Password',style: TextStyle(color: Colors.white),),
           leading: IconButton(
             onPressed: (){
               Navigator.push(context, MaterialPageRoute(builder: (context) => LogIn(),));
             },
-            icon: Icon(Icons.keyboard_backspace_rounded,color: Colors.white),
+            icon:const Icon(Icons.keyboard_backspace_rounded,color: Colors.white),
           )
 
       ),
@@ -35,15 +32,15 @@ class _ForgorPasswordState extends State<ForgorPassword> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image(
+              const  Image(
                   width: 200,
                   height: 200,
                   image: AssetImage('assets/images/main.png')),
-              Text(
+              const Text(
                 'Recover Password',
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 5),
+              const  SizedBox(height: 5),
               Text(
                 'Enter Email to Recover your password',
                 style: TextStyle(
@@ -51,11 +48,11 @@ class _ForgorPasswordState extends State<ForgorPassword> {
                     fontWeight: FontWeight.w500,
                     color: Colors.grey.shade600),
               ),
-              SizedBox(height: 50,),
+              const    SizedBox(height: 50,),
               TextFormField(
                 keyboardType: TextInputType.emailAddress,
                 controller: emailController,
-                decoration: InputDecoration(
+                decoration:const InputDecoration(
                   prefixIcon: Icon(Icons.email_outlined),
                   hintText: 'Enter Email',
                 ),
@@ -69,7 +66,7 @@ class _ForgorPasswordState extends State<ForgorPassword> {
                   return null; // Validation passed
                 },
               ),
-              SizedBox(height: 50,),
+              const   SizedBox(height: 50,),
               customGestureDetector(buttonText: "Forgot Password", onTap: (){
                 auth.sendPasswordResetEmail(email: emailController.text.toString()).then((value){
                   Utils().toastmessage('We have send you email to recover password\ncheck eamil');

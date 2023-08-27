@@ -5,10 +5,10 @@ import 'package:password_generator_app/constants.dart';
 import 'package:password_generator_app/main_screens/simple_pasword.dart';
 import 'package:password_generator_app/main_screens/tough_password.dart';
 import 'package:password_generator_app/main_screens/view_password.dart';
-
 import '../auth_screen/login.dart';
 
-class MyHomePage extends StatefulWidget {
+class  MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -26,7 +26,7 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Theme.of(context).primaryColor,
-          title: Text(
+          title:const Text(
             'Password Generator',
             style: TextStyle(color: Colors.white),
           ),
@@ -34,11 +34,17 @@ class _MyHomePageState extends State<MyHomePage> {
             IconButton(
               onPressed: (){
                 setState(() {
-                  _showSuccessDialog(context);
+                  showSuccessDialog(context: context,
+                      heading: 'Are You Sure !\nyou want to LogOut',
+                      buttontext: 'yes',onPressed: (){
+                        auth.signOut().then((value) => {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) =>const LogIn(),))
+                        });
+                  });
                 });
 
               },
-             icon:   Icon(Icons.logout,color:Colors.white),)
+             icon: const  Icon(Icons.logout,color:Colors.white),)
           ],
         ),
         body: SafeArea(
@@ -52,15 +58,15 @@ class _MyHomePageState extends State<MyHomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(height: 30,),
-                        Image(
+                        const  Image(
                             width: 200,
                             height: 200,
                             image: AssetImage('assets/images/main.png')),
-                        Text(
+                        const  Text(
                           'Password Generator',
                           style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(height: 1),
+                        const  SizedBox(height: 1),
                         Text(
                           'Enhancing app security through tough password ',
                           style: TextStyle(
@@ -76,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   column: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    SizedBox(
+                    const  SizedBox(
                       height: 25,
                     ),
                     customGestureDetector(
@@ -115,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           style: TextStyle(
                               fontSize: 12, color: Colors.grey.shade600)),
                     ),
-                    SizedBox(
+                    const  SizedBox(
                       height: 25,
                     ),
                   ],
@@ -125,41 +131,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-    );
-  }
-  void _showSuccessDialog(BuildContext context) {
-    showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content:const  Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(height: 16.0),
-              Text(
-                'Are You Sure !\nyou want to LogOut',
-                style: TextStyle(fontSize: 18.0),textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                auth.signOut().then((value) => {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => LogIn(),))
-                });
-              },
-              child: Text('Yes'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('Cancel'),
-            ),
-          ],
-        );
-      },
     );
   }
 }

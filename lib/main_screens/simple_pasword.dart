@@ -1,17 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'package:flutter/foundation.dart';
-
 import '../constants.dart';
 import 'home_screen.dart';
 
 
 class SimplePassword extends StatefulWidget {
 
-  SimplePassword({Key? key}) : super(key: key);
+  const SimplePassword({Key? key}) : super(key: key);
 
   @override
   State<SimplePassword> createState() => _SimplePasswordState();
@@ -19,11 +16,12 @@ class SimplePassword extends StatefulWidget {
 class _SimplePasswordState extends State<SimplePassword> {
   final auth = FirebaseAuth.instance;
   final firestore = FirebaseFirestore.instance.collection('users');
-  String a="";
+  final appnameController = TextEditingController();
+  String appname="";
   var str;
   var num;
   int count=1;
-  String pasword=" ";
+  String pasword="";
   String generateRandomString(int len) {
     var str;
     final _random = Random();
@@ -37,7 +35,7 @@ class _SimplePasswordState extends State<SimplePassword> {
     return str;
   }
 
-  String generatenumber(int len) {
+  String generaterandomnumber(int len) {
     var num1;
     final _random = Random();
     const _availableNum =
@@ -56,12 +54,12 @@ class _SimplePasswordState extends State<SimplePassword> {
 
       appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
-          title: Text('Generate Simple Password ' ,style: TextStyle(color: Colors.white),),
+          title:const Text('Generate Simple Password ' ,style: TextStyle(color: Colors.white),),
           leading: IconButton(
             onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage(),));
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>const MyHomePage(),));
             },
-            icon: Icon(Icons.keyboard_backspace_rounded,color: Colors.white),
+            icon:const Icon(Icons.keyboard_backspace_rounded,color: Colors.white),
           )
       ),
       body: SafeArea(
@@ -73,8 +71,8 @@ class _SimplePasswordState extends State<SimplePassword> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(height: 30,),
-                    Text("$pasword ",style: TextStyle(fontSize: 35,color: Colors.black87),),
+                    const  SizedBox(height: 30,),
+                    Text("$pasword ",style:const TextStyle(fontSize: 35,color: Colors.black87),),
                     Divider(thickness: 1,height: 1,color: Colors.grey.shade700,indent: 80,endIndent: 80,),
 
                   ],
@@ -85,69 +83,51 @@ class _SimplePasswordState extends State<SimplePassword> {
               column:Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                SizedBox(height: 25,),
+                const  SizedBox(height: 25,),
                 customGestureDetector(buttonText:'App Name', onTap: (){
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          backgroundColor: Colors.white,
-                          title: Text('App Name',style: TextStyle(color: Colors.black87),),
-                          content: TextField(
-                             maxLength: 20,
-                            style: TextStyle(color: Colors.black),
-                            onChanged: (value) {
-                              setState(() {
-                                a =  (value);
-                              });
-                            },
-                            decoration: InputDecoration(hintText: "Enter App Name",hintStyle:TextStyle(color:Colors.black54)),
-                          ),
-                          actions: <Widget>[
-                            ElevatedButton(
-                              child: Text("ok"),
-                              onPressed: () {
-                                setState(() {
-                                  Navigator.pop(context);
-                                });
-                              },),
-                            ElevatedButton(
-                              child: Text("cancle"),
-                              onPressed: () {
-                                setState(() {
-                                  Navigator.pop(context);
-                                  a='';
-                                });
-                              },),
+                  showSuccessDialog(context: context, heading: 'App Name', onPressed: (){
+                    appname = appnameController.text.toString();
+                    Navigator.pop(context);
+                    appnameController.clear();
+                  }, buttontext: "Ok",
+                    content: Form(
+                    child: TextFormField(
+                      maxLength: 25,
+                      decoration:const InputDecoration(
+                        hintText: 'Enter App name'
+                      ),
+                      controller: appnameController,
+                    ),
+                  ),);
 
-                          ],
-                        );
-                      });
                 },
                   context: context, ),
                 customGestureDetector(buttonText: 'Generate Password',  onTap: (){
                   setState(() {
-                   if(a!=''){
+                   if(appname!=''){
                      str=generateRandomString(4);
-                     num=generatenumber(4);
+                     num=generaterandomnumber(4);
                      pasword=str+num;
                    }else
                  {
                    Utils().toastmessage('For Generating Password you enter app name');
-
                  }
                   });
 
                 }, context: context),
                 customGestureDetector(buttonText: 'Save Password', onTap: (){
-                  addpasswor(pasword: '$pasword',a: '$a');
-                  Utils().toastmessage('Password Saved');
+                  if(pasword !=''){
+                    addpasswor(pasword: '$pasword',a: '$appname');
+                    Utils().toastmessage('Password Saved');
+                  }else{
+                    Utils().toastmessage('Enter app name and generate password to save password');
+                  }
                   setState(() {
                     pasword='';
-                    a='';
+                    appname='';
                   });
                 }, context: context),
-                SizedBox(height: 25,),
+                const SizedBox(height: 25,),
 
               ],
             ), ),

@@ -1,14 +1,8 @@
-import 'dart:async';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:password_generator_app/auth_screen/login.dart';
 import 'package:password_generator_app/constants.dart';
 import 'package:password_generator_app/onboarding_screen/screens.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
-import '../main_screens/home_screen.dart';
-
 class OnboardScreen extends StatefulWidget {
   const OnboardScreen({super.key});
 
@@ -37,7 +31,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
                   ),
                 )
             ),
-            Align(
+            const  Align(
               alignment: Alignment(0,-0.80),
               child:  Text('Welcome to \nPassword Generator',style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),textAlign: TextAlign.center),),
             Positioned(
@@ -84,7 +78,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
               ],
             ),
            Align(
-             alignment: Alignment(0,0.95),
+             alignment:const Alignment(0,0.95),
                child: SmoothPageIndicator(
                  controller: pageController,
                  count: 3,
@@ -96,9 +90,9 @@ class _OnboardScreenState extends State<OnboardScreen> {
                  ),
                )),
             Align(
-              alignment: Alignment(0,0.85),
+              alignment:const Alignment(0,0.85),
               child: customGestureDetector(buttonText: 'Start', onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder:(context) => LogIn(),));
+                    Navigator.push(context, MaterialPageRoute(builder:(context) =>const LogIn(),));
                   }, context: context,height: 50),
             ),
 

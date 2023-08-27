@@ -13,6 +13,7 @@ class ToughPassword extends StatefulWidget {
 }
 
 class _ToughPasswordState extends State<ToughPassword> {
+  final appnameController = TextEditingController();
   int charater=0;
   int digit=0;
   int sym=0;
@@ -21,7 +22,7 @@ class _ToughPasswordState extends State<ToughPassword> {
   var sym1;
   int lengh=0;
   int totalLength=0;
-  String a="";
+  String appname="";
   var pasword="";
   String generateRandomString(int len) {
     final _random = Random();
@@ -61,12 +62,12 @@ class _ToughPasswordState extends State<ToughPassword> {
     return  Scaffold(
       appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
-        title: Text('Create Tough Password',style: TextStyle(color: Colors.white),),
+        title:const Text('Create Tough Password',style: TextStyle(color: Colors.white),),
           leading: IconButton(
             onPressed: (){
               Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage(),));
             },
-            icon: Icon(Icons.keyboard_backspace_rounded,color: Colors.white),
+            icon:const Icon(Icons.keyboard_backspace_rounded,color: Colors.white),
           )
 
       ),
@@ -77,8 +78,8 @@ class _ToughPasswordState extends State<ToughPassword> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 30,),
-                  Text("$pasword ",style: TextStyle(fontSize: 35,color: Colors.black87),),
+                  const SizedBox(height: 30,),
+                  Text("$pasword ",style:const TextStyle(fontSize: 35,color: Colors.black87),),
                   Divider(thickness: 1,height: 1,color: Colors.grey.shade700,indent: 80,endIndent: 80,),
                 ],
               )
@@ -88,117 +89,90 @@ class _ToughPasswordState extends State<ToughPassword> {
             column: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              SizedBox(height: 25,),
+              const  SizedBox(height: 25,),
               customGestureDetector(context: context,onTap: (){
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        backgroundColor: Colors.white,
-                        title: Text('App Name',style: TextStyle(color: Colors.black87),),
-                        content: TextField(
-                          style: TextStyle(color: Colors.black),
-                          onChanged: (value) {
-                            setState(() {
-                              a =  (value);
-                            });
-                          },
-                          decoration: InputDecoration(hintText: "Enter App Name",hintStyle:TextStyle(color:Colors.black54)),
-                        ),
-                        actions: <Widget>[
-                          ElevatedButton(
-
-                            child: Text("ok"),
-                            onPressed: () {
-                              setState(() {
-                                Navigator.pop(context);
-                              });
-                            },
-                          ),
-
-                        ],
-                      );
-                    });
+                showSuccessDialog(context: context, heading: 'App Name', onPressed: (){
+                  appname = appnameController.text.toString();
+                  Navigator.pop(context);
+                  appnameController.clear();
+                }, buttontext: "Ok",
+                  content: Form(
+                    child: TextFormField(
+                      maxLength: 25,
+                      decoration:const InputDecoration(
+                          hintText: 'Enter App name'
+                      ),
+                      controller: appnameController,
+                    ),
+                  ),);
               },buttonText: 'Generate Password For',height: 45),
               customGestureDetector(context: context, onTap: (){
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        backgroundColor: Colors.white,
-                        title: Text('Enter Lenght',style: TextStyle(color: Colors.black87),),
-                        content: Container(
-                          height: 250,
-                          child: Column(
-                            children: [
-                              TextField(
-                                style: TextStyle(color: Colors.black),
-                                keyboardType: TextInputType.number,
-                                onChanged: (value) {
-                                  setState(() {
-                                    lengh =  int.parse(value);
-                                    totalLength=lengh;
-                                  });
-                                },
-                                decoration: InputDecoration(hintText: "Total Length (0-15)",hintStyle:TextStyle(color:Colors.black54)),
-                              ),
-                              TextField(
-                                keyboardType: TextInputType.number,
-                                style: TextStyle(color: Colors.black),
-                                onChanged: (value) {
-                                  setState(() {
-                                    charater =  int.parse(value);
-
-                                  });
-                                },
-                                decoration: InputDecoration(hintText: "Characters",hintStyle:TextStyle(color:Colors.black54)),
-                              ),
-                              TextField(
-                                keyboardType: TextInputType.number,
-                                style: TextStyle(color: Colors.black),
-                                onChanged: (value) {
-                                  setState(() {
-                                    digit =  int.parse(value);
-                                  });
-                                },
-                                decoration: InputDecoration(hintText: "Digits",hintStyle:TextStyle(color:Colors.black54)),
-                              ),
-                              TextField(
-                                keyboardType: TextInputType.number,
-                                style: TextStyle(color: Colors.black),
-                                onChanged: (value) {
-                                  setState(() {
-                                    sym =  int.parse(value);
-                                  });
-                                },
-                                decoration: InputDecoration(hintText: "Symbols",hintStyle:TextStyle(color:Colors.black54)),
-                              ),
-                            ],
-                          ),
-                        ),
-                        actions: <Widget>[
-                          ElevatedButton(
-                            child: Text("ok"),
-                            onPressed: () {
-                              setState(() {
-                                lengh=lengh-charater;
-                                lengh=lengh-digit;
-                                lengh=lengh-sym;
-                                Navigator.pop(context);
-                              });
-                            },
-                          ),
-
-                        ],
-                      );
+                showSuccessDialog(context: context,
+                  heading: 'Enter Length',
+                  onPressed: (){
+                    setState(() {
+                      lengh=lengh-charater;
+                      lengh=lengh-digit;
+                      lengh=lengh-sym;
+                      Navigator.pop(context);
                     });
+                  }, buttontext: 'Ok',
+                  content: SizedBox(
+                  height: 250,
+                  child: Column(
+                    children: [
+                      TextField(
+                        style:const TextStyle(color: Colors.black),
+                        keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          setState(() {
+                            lengh =  int.parse(value);
+                            totalLength=lengh;
+                          });
+                        },
+                        decoration:const InputDecoration(hintText: "Total Length (0-15)",hintStyle:TextStyle(color:Colors.black54)),
+                      ),
+                      TextField(
+                        keyboardType: TextInputType.number,
+                        style:const TextStyle(color: Colors.black),
+                        onChanged: (value) {
+                          setState(() {
+                            charater =  int.parse(value);
+
+                          });
+                        },
+                        decoration: InputDecoration(hintText: "Characters",hintStyle:TextStyle(color:Colors.black54)),
+                      ),
+                      TextField(
+                        keyboardType: TextInputType.number,
+                        style: TextStyle(color: Colors.black),
+                        onChanged: (value) {
+                          setState(() {
+                            digit =  int.parse(value);
+                          });
+                        },
+                        decoration:const InputDecoration(hintText: "Digits",hintStyle:TextStyle(color:Colors.black54)),
+                      ),
+                      TextField(
+                        keyboardType: TextInputType.number,
+                        style:const TextStyle(color: Colors.black),
+                        onChanged: (value) {
+                          setState(() {
+                            sym =  int.parse(value);
+                          });
+                        },
+                        decoration:const InputDecoration(hintText: "Symbols",hintStyle:TextStyle(color:Colors.black54)),
+                      ),
+                    ],
+                  ),
+                ),);
                 generatenumber(charater);
                 generatenumber(digit);
                 generatenumber(sym);
               },buttonText: 'Total Length',height: 45),
               customGestureDetector(buttonText: 'generate password', onTap: (){
-                if(a==""){
-                  Utils().toastmessage('For Generating Password\nyou enter app name');
+                if(appname==""){
+                  Utils().toastmessage('For Generating Password you enter app name');
                 }
              else   if(totalLength>15 ){
                  Utils().toastmessage("Total length is greater then 15");
@@ -223,15 +197,19 @@ class _ToughPasswordState extends State<ToughPassword> {
                 }
               }, context: context,height: 45),
               customGestureDetector(buttonText: "Save Password", onTap: (){
-                addpasswor(a: '$a',pasword: '$pasword');
-                Utils().toastmessage('Password Saved');
+                if(appname!=''&& pasword!=''){
+                  addpasswor(pasword: '$pasword',a: '$appname');
+                  Utils().toastmessage('Password Saved');
+                }else{
+                  Utils().toastmessage('Enter app name and generate password to save password');
+                }
                 setState(() {
                   pasword='';
-                  a='';
+                  appname='';
                 });
               }, context: context,height: 45),
 
-              SizedBox(height: 25,),
+              const  SizedBox(height: 25,),
 
             ],
           ),),

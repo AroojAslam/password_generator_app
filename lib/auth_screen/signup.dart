@@ -33,15 +33,15 @@ class _SignUpState extends State<SignUp> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image(
+                  const   Image(
                       width: 200,
                       height: 200,
                       image: AssetImage('assets/images/main.png')),
-                  Text(
+                  const   Text(
                     'SignUp',
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    style:const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 5),
+                  const  SizedBox(height: 5),
                   Text(
                     'Welcome to Password generator ',
                     style: TextStyle(
@@ -58,7 +58,7 @@ class _SignUpState extends State<SignUp> {
                             padding: const EdgeInsets.symmetric(vertical: 10),
                             child: TextFormField(
                               controller: nameController,
-                              decoration: InputDecoration(
+                              decoration:const InputDecoration(
                                   prefixIcon: Icon(Icons.person_outline_rounded),
                                   hintText: 'Name'
                               ),
@@ -74,7 +74,7 @@ class _SignUpState extends State<SignUp> {
                             child: TextFormField(
                               keyboardType: TextInputType.emailAddress,
                               controller: emailController,
-                              decoration: InputDecoration(
+                              decoration:const InputDecoration(
                                 prefixIcon: Icon(Icons.email_outlined),
                                 hintText: 'Email',
                               ),
@@ -95,7 +95,7 @@ class _SignUpState extends State<SignUp> {
                             child: TextFormField(
                               controller: passwordController,
                               obscureText: true,
-                              decoration: InputDecoration(
+                              decoration:const InputDecoration(
                                   prefixIcon: Icon(Icons.password),
                                   hintText: 'Password'
                               ),
@@ -111,7 +111,7 @@ class _SignUpState extends State<SignUp> {
                             child: TextFormField(
                               controller: confirmpasswordController,
                               obscureText: true,
-                              decoration: InputDecoration(
+                              decoration:const InputDecoration(
                                   prefixIcon: Icon(Icons.password),
                                   hintText: 'Confirm Password'
                               ),
@@ -125,9 +125,8 @@ class _SignUpState extends State<SignUp> {
                         ],
                       )
                   ),
-                  SizedBox(height: 30,),
+                  const   SizedBox(height: 30,),
                   customGestureDetector(buttonText: 'SignUp', onTap: (){
-                   // String uid =DateTime.now().millisecondsSinceEpoch.toString();
                     if(formKey.currentState!.validate()){
                       setState(() {
                         loading=true;
@@ -136,14 +135,8 @@ class _SignUpState extends State<SignUp> {
                         auth.createUserWithEmailAndPassword(
                             email: emailController.text,
                             password:passwordController.text).then((value) => {
-                          Utils().toastmessage('Sucessfuly SignIn'),
-                          // firestore.doc(uid).set({
-                          //   "uid":uid,
-                          //   "username":nameController.text.toString(),
-                          //   "email":emailController.text.toString(),
-                          //   "password":passwordController.text.toString(),
-                          // }),
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => LogIn(),)),
+                          Utils().toastmessage('Successfully SignIn'),
+                          Navigator.push(context, MaterialPageRoute(builder: (context) =>const LogIn(),)),
                         setState(() {
                         loading=false;
                         }),
@@ -164,10 +157,10 @@ class _SignUpState extends State<SignUp> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Already Have an Account'),
+                      const Text('Already Have an Account'),
                       TextButton(onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => LogIn(),));
-                      }, child: Text('LogIn')),
+                        Navigator.push(context, MaterialPageRoute(builder: (context) =>const LogIn(),));
+                      }, child:const Text('LogIn')),
                     ],
                   ),
                 ],

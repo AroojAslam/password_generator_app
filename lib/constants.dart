@@ -2,6 +2,38 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+void showSuccessDialog({
+  required BuildContext context,
+  required String heading
+  ,required VoidCallback onPressed,
+  required String buttontext,
+    Widget? content}) {
+  showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title:Text(heading,style: TextStyle(fontSize: 18.0),
+          textAlign: TextAlign.center,) ,
+        content: content!= null ? content : null ,
+        actions: <Widget>[
+          TextButton(
+            onPressed:onPressed,
+            child: Text(buttontext),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('Cancel'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+
 void addpasswor({required String pasword,required String a} ){
   final firestore = FirebaseFirestore.instance.collection('users');
   final auth = FirebaseAuth.instance;
